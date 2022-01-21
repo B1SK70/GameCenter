@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="oval">
+
+            <solid android:color="@color/filledCellSelected" />
+            <size
+                android:height="60dp"
+                android:width="60dp" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/black" />
+        </shape>
+    </item>
+    <item
+        android:bottom="30dp"
+        android:left="10dp"
+        android:right="30dp"
+        android:top="10dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="oval">
+            <solid android:color="@color/filledCellShine" />
+        </shape>
+    </item>
+</layer-list>
