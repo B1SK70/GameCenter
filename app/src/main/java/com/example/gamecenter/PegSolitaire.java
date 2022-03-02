@@ -1,12 +1,21 @@
 package com.example.gamecenter;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PegSolitaire extends AppCompatActivity {
+
+    private String user_name;
+    private int scoreN;
 
     private boolean firstTap = true;
     private int[] tappedCel = new int[2];
@@ -22,13 +31,13 @@ public class PegSolitaire extends AppCompatActivity {
     TextView[][] allC;
 
     int boardStatus[][] = {
-            {2, 2, 1, 1, 1, 2, 2},
-            {2, 2, 1, 1, 1, 2, 2},
-            {1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 0, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1},
-            {2, 2, 1, 1, 1, 2, 2},
-            {2, 2, 1, 1, 1, 2, 2},
+            {2, 2, 1, 0, 0, 2, 2},
+            {2, 2, 1, 1, 0, 2, 2},
+            {0, 1, 0, 0, 0, 0, 1},
+            {1, 1, 1, 0, 1, 0, 1},
+            {0, 1, 0, 1, 0, 1, 1},
+            {2, 2, 1, 0, 1, 2, 2},
+            {2, 2, 0, 1, 0, 2, 2},
     };
 
     @Override
@@ -100,6 +109,8 @@ public class PegSolitaire extends AppCompatActivity {
                                         deleteCircle(jumpedCell[0], jumpedCell[1]);
                                         drawCircle(vX, vY);
 
+                                        updateScore();
+
                                         firstTap = true;
                                         tappedCel = new int[2];
                                         actionPerformed = true;
@@ -113,10 +124,84 @@ public class PegSolitaire extends AppCompatActivity {
                             firstTap = true;
                             tappedCel = new int[2];
                         }
+                        if (!StillPlayable()) registerScore();
                     }
                 });
             }
         }
+    }
+
+    private boolean StillPlayable() {
+        //random unexistent num
+        int comodin = 7;
+
+        //Check horizontally
+        for (int[] row : boardStatus) {
+            for (int num : row) {
+                if (comodin == num && comodin == 1) return true;
+                comodin = num;
+            }
+            comodin = 7;
+        }
+
+        //Check vertically
+        comodin = 7;
+        for (int i = 0; i <= 6; i++) {
+            for (int j = 0; j <= 6; j++) {
+
+                if (boardStatus[j][i] == comodin && comodin == 1) return true;
+                comodin = boardStatus[j][i];
+            }
+            comodin = 7;
+        }
+        return false;
+    }
+
+    private void registerScore() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("WHAT'S YOUR NAME");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("SAVE SCORE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                user_name = input.getText().toString();
+                sendScore();
+            }
+        });
+        builder.setNegativeButton("DON'T PLEASE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void sendScore() {
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("user_name", user_name);
+        resultIntent.putExtra("score", String.valueOf(scoreN) );
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+
+    }
+
+    private void updateScore() {
+        int newScore = 0;
+        for (int [] row : boardStatus) {
+            for ( int cell : row ) {
+                if (cell == 1) newScore++;
+            }
+        }
+        scoreN = newScore;
+
+        if (scoreN == 1) registerScore();
+
     }
 
     private void drawCircle(int x, int y) {

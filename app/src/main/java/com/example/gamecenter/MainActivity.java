@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         timeline.schedule(ToMenu, 4300);
 
 
-
     }
 
     private void hideSystem() {

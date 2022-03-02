@@ -1,14 +1,20 @@
 package com.example.gamecenter;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -16,7 +22,10 @@ import java.util.Random;
 public class Joc2048 extends AppCompatActivity implements
         GestureDetector.OnGestureListener {
 
+    boolean gameRunning = true;
+
     int scoreN = 0;
+    String user_name;
 
     GestureDetectorCompat mDetector;
 
@@ -26,10 +35,10 @@ public class Joc2048 extends AppCompatActivity implements
     TextView[][] cellsMap;
 
     int[][] gameMap = new int[][]{
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+            {2, 4, 2, 4},
+            {4, 2, 4, 2},
+            {2, 4, 2, 4},
+            {4, 2, 4, 4}
     };
 
     LastStatus lastStatus = new LastStatus();
@@ -42,7 +51,7 @@ public class Joc2048 extends AppCompatActivity implements
 
         identifyButtons();
 
-        updateGameStatus(gameMap,scoreN);
+        updateGameStatus(gameMap, scoreN);
 
     }
 
@@ -113,7 +122,77 @@ public class Joc2048 extends AppCompatActivity implements
                     }
                 }
             }
-        } else System.out.println("GAME OVER");
+        } else {
+            if (!StillPlayable()) gameOver();
+        }
+    }
+
+    private boolean StillPlayable() {
+        //random unexistent num
+        int comodin = 1;
+
+        //Check horizontally
+        for (int[] row : gameMap) {
+            for (int num : row) {
+                if (comodin == num) return true;
+                comodin = num;
+            }
+            comodin = 1;
+        }
+
+
+        //Check vertically
+        comodin = 1;
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+
+                if (gameMap[j][i] == comodin) return true;
+                comodin = gameMap[j][i];
+            }
+            comodin = 1;
+        }
+
+        return false;
+    }
+
+    private void gameOver() {
+        gameRunning = false;
+        System.out.println("GAME OVER");
+        registerScore();
+    }
+
+    private void registerScore() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("WHAT'S YOUR NAME");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("SAVE SCORE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                user_name = input.getText().toString();
+                sendScore();
+            }
+        });
+        builder.setNegativeButton("DON'T PLEASE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void sendScore() {
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("user_name", user_name);
+        resultIntent.putExtra("score", String.valueOf(scoreN) );
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+
     }
 
     @Override
@@ -143,7 +222,7 @@ public class Joc2048 extends AppCompatActivity implements
             } else direction = "S";
         }
 
-        moveCells(direction);
+        if (gameRunning) moveCells(direction);
         return true;
     }
 
@@ -194,7 +273,7 @@ public class Joc2048 extends AppCompatActivity implements
                 break;
         }
 
-        int newScore = linearMovement(easySort,scoreN);
+        int newScore = linearMovement(easySort, scoreN);
 
         int[][] finalEasySort = new int[4][4];
 
@@ -224,12 +303,11 @@ public class Joc2048 extends AppCompatActivity implements
         }
 
 
-        updateGameStatus(finalEasySort,newScore);
+        updateGameStatus(finalEasySort, newScore);
 
     }
 
     private int getNumberColor(int value) {
-
         switch (value) {
             case 2:
                 return getResources().getColor(R.color.cell_2);
@@ -256,16 +334,15 @@ public class Joc2048 extends AppCompatActivity implements
             default:
                 return getResources().getColor(R.color.empty_cell);
         }
-
     }
 
-    private int linearMovement(int[][] easySort,int scoreN) {
+    private int linearMovement(int[][] easySort, int scoreN) {
 
         int newScore = scoreN;
 
         for (int[] move : easySort) {
 
-            boolean[] cellsFusionated = { false, false, false, false };
+            boolean[] cellsFusionated = {false, false, false, false};
 
             boolean actionPerformed = true;
             while (actionPerformed) {
@@ -297,7 +374,7 @@ public class Joc2048 extends AppCompatActivity implements
         return newScore;
     }
 
-    private void updateGameStatus(int[][] easySort,int newScore) {
+    private void updateGameStatus(int[][] easySort, int newScore) {
         //Save last game status
         for (int x = 0; x < gameMap.length; x++) {
             for (int y = 0; y < gameMap[x].length; y++) {
