@@ -15,10 +15,20 @@
         tools:layout_editor_absoluteY="1dp">
 
         <Button
-            android:id="@+id/playClose"
+            android:id="@+id/playScore"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/playPegSolitaire"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp"
+            android:gravity="center_horizontal"
+            android:text="SCORES" />
+
+        <Button
+            android:id="@+id/playClose"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/playScore"
             android:layout_alignParentStart="true"
             android:layout_marginTop="41dp"
             android:gravity="center_horizontal"
@@ -40,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="81dp"
+            android:layout_marginTop="41dp"
             android:gravity="center_horizontal"
             android:text="WHAT ARE YOU PLAYING"
             android:textSize="20sp" />

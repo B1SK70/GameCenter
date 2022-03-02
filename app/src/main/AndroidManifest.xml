@@ -13,6 +13,9 @@
             android:name=".Menu"
             android:exported="true" />
         <activity
+            android:name=".Scores"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
