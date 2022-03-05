@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 public class Menu extends AppCompatActivity {
 
+    SharedPreferences sharedPref;
     SQLiteDatabase db;
 
     Button play2048, playPegSolitaire, playScore, playClose;
@@ -21,11 +23,38 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        sharedPref = getSharedPreferences("mypref", 0);
         wakeUpDB();
 
+        checkUser();
 
         setBtns();
 
+    }
+
+//    private void laslalala() {
+//        db.execSQL("CREATE TABLE users (_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, password TEXT)");
+//        insertUserIntoDB("arnau", "arnau");
+//    }
+
+    private void checkUser() {
+        if (sharedPref.getInt("userState", 0) == 0  ) {
+            sendToLogin();
+            finish();
+        }
+    }
+
+    private void sendToLogin() {
+        Intent intent = new Intent(Menu.this, Login.class);
+        startActivity(intent);
+
+    }
+
+    private void setUserState(int state) {
+        //  0 -> Not logged    1 -> Logged
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("userState", state);
+        editor.commit();
     }
 
     private void setBtns() {
@@ -49,7 +78,7 @@ public class Menu extends AppCompatActivity {
         playScore.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Menu.this, Scores.class);
-                startActivityForResult(intent, 2);
+                startActivity(intent);
             }
         });
 
@@ -65,11 +94,19 @@ public class Menu extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            String user_name = data.getStringExtra("user_name");
-            String score = data.getStringExtra("score");
+        if (requestCode == 1 || requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                String user_name = data.getStringExtra("user_name");
+                String score = data.getStringExtra("score");
 
-            saveScore(requestCode, user_name, Integer.parseInt(score));
+                saveScore(requestCode, user_name, Integer.parseInt(score));
+            }
+        } else {
+
+
+
+
+
         }
     }
 
@@ -83,8 +120,11 @@ public class Menu extends AppCompatActivity {
     private void wakeUpDB() {
         db = openOrCreateDatabase("MyDatabase", MODE_PRIVATE, null);
         try {
+            db.execSQL("CREATE TABLE users (_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, password TEXT)");
             db.execSQL("CREATE TABLE g2048 (_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, score REAL)");
             db.execSQL("CREATE TABLE gpeg (_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT, core REAL)");
+
+            insertUserIntoDB("arnau", "arnau");
         } catch (Exception e) {
             System.out.println("table existent, skipping create table");
         }
@@ -96,6 +136,17 @@ public class Menu extends AppCompatActivity {
         values.put("score", score);
         db.insert(
                 game,
+                "_id",
+                values
+        );
+    }
+
+    private void insertUserIntoDB(String user_name, String password) {
+        ContentValues values = new ContentValues(2);
+        values.put("user_name", user_name);
+        values.put("password", password);
+        db.insert(
+                "users",
                 "_id",
                 values
         );

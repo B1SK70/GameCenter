@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         Timer timeline = new Timer();
         timeline.schedule(fadeOutLogo, 2300);
-        timeline.schedule(ToMenu, 4300);
+        timeline.schedule(ToMenu, 300);
 
 
     }
