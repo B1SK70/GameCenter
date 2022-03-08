@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class PegSolitaire extends AppCompatActivity {
 
-    private String user_name;
     private int scoreN;
 
     private boolean firstTap = true;
@@ -31,13 +30,13 @@ public class PegSolitaire extends AppCompatActivity {
     TextView[][] allC;
 
     int boardStatus[][] = {
-            {2, 2, 1, 0, 0, 2, 2},
-            {2, 2, 1, 1, 0, 2, 2},
-            {0, 1, 0, 0, 0, 0, 1},
-            {1, 1, 1, 0, 1, 0, 1},
-            {0, 1, 0, 1, 0, 1, 1},
-            {2, 2, 1, 0, 1, 2, 2},
             {2, 2, 0, 1, 0, 2, 2},
+            {2, 2, 0, 0, 0, 2, 2},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {2, 2, 0, 0, 0, 2, 2},
+            {2, 2, 0, 0, 0, 2, 2},
     };
 
     @Override
@@ -124,68 +123,65 @@ public class PegSolitaire extends AppCompatActivity {
                             firstTap = true;
                             tappedCel = new int[2];
                         }
-                        if (!StillPlayable()) registerScore();
+                        if (!StillPlayable()) gameOver();
                     }
                 });
             }
         }
     }
+    private void gameOver() {
 
-    private boolean StillPlayable() {
-        //random unexistent num
-        int comodin = 7;
-
-        //Check horizontally
-        for (int[] row : boardStatus) {
-            for (int num : row) {
-                if (comodin == num && comodin == 1) return true;
-                comodin = num;
-            }
-            comodin = 7;
-        }
-
-        //Check vertically
-        comodin = 7;
-        for (int i = 0; i <= 6; i++) {
-            for (int j = 0; j <= 6; j++) {
-
-                if (boardStatus[j][i] == comodin && comodin == 1) return true;
-                comodin = boardStatus[j][i];
-            }
-            comodin = 7;
-        }
-        return false;
-    }
-
-    private void registerScore() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("WHAT'S YOUR NAME");
+        builder.setTitle("GAME OVER");
 
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+        builder.setMessage("Your score -> " + scoreN);
 
-        builder.setPositiveButton("SAVE SCORE", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("GO BACK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                user_name = input.getText().toString();
                 sendScore();
             }
         });
-        builder.setNegativeButton("DON'T PLEASE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+
+        builder.setCancelable(false);
         builder.show();
+    }
+
+    private boolean StillPlayable() {
+        //All balls
+        for (int x = 0; x < boardStatus.length; x++) {
+            for (int y = 0; y < boardStatus[0].length; y++) {
+
+                //check horizonatl movement
+                try {
+                    if (boardStatus[x][y] == 1 &&
+                            ((boardStatus[x - 1][y] == 1 && boardStatus[x + 1][y] == 0) || (boardStatus[x + 1][y] == 1 && boardStatus[x - 1][y] == 0))) {
+                        return true;
+                    }
+                } catch (Exception e) {
+                    //TryCatch to avoid out of bounds
+                }
+
+                //Check vertical movement
+                try {
+                    if (boardStatus[x][y] == 1 &&
+                            ((boardStatus[x][y - 1] == 1 && boardStatus[x][y + 1] == 0) || (boardStatus[x][y + 1] == 1 && boardStatus[x][y - 1] == 0))) {
+                        return true;
+                    }
+                } catch (Exception e) {
+                    //TryCatch to avoid out of bounds
+                }
+
+            }
+        }
+
+        return false;
     }
 
     private void sendScore() {
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("user_name", user_name);
-        resultIntent.putExtra("score", String.valueOf(scoreN) );
+        resultIntent.putExtra("score", String.valueOf(scoreN));
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
 
@@ -193,14 +189,14 @@ public class PegSolitaire extends AppCompatActivity {
 
     private void updateScore() {
         int newScore = 0;
-        for (int [] row : boardStatus) {
-            for ( int cell : row ) {
+        for (int[] row : boardStatus) {
+            for (int cell : row) {
                 if (cell == 1) newScore++;
             }
         }
         scoreN = newScore;
 
-        if (scoreN == 1) registerScore();
+        if (scoreN == 1) sendScore();
 
     }
 

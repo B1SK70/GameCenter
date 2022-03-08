@@ -25,7 +25,6 @@ public class Joc2048 extends AppCompatActivity implements
     boolean gameRunning = true;
 
     int scoreN = 0;
-    String user_name;
 
     GestureDetectorCompat mDetector;
 
@@ -36,7 +35,7 @@ public class Joc2048 extends AppCompatActivity implements
 
     int[][] gameMap = new int[][]{
             {2, 4, 2, 4},
-            {4, 2, 4, 2},
+            {4, 2, 4, 4},
             {2, 4, 2, 4},
             {4, 2, 4, 4}
     };
@@ -157,42 +156,33 @@ public class Joc2048 extends AppCompatActivity implements
 
     private void gameOver() {
         gameRunning = false;
-        System.out.println("GAME OVER");
-        registerScore();
+        requestPlayAgain();
     }
 
-    private void registerScore() {
+    private void requestPlayAgain() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("WHAT'S YOUR NAME");
+        builder.setTitle("GAME OVER");
 
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+        builder.setMessage("Your score -> " + scoreN );
 
-        builder.setPositiveButton("SAVE SCORE", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("GO BACK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                user_name = input.getText().toString();
                 sendScore();
             }
         });
-        builder.setNegativeButton("DON'T PLEASE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+
+        builder.setCancelable(false);
         builder.show();
     }
 
     private void sendScore() {
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("user_name", user_name);
         resultIntent.putExtra("score", String.valueOf(scoreN) );
         setResult(Activity.RESULT_OK, resultIntent);
-        finish();
 
+        finish();
     }
 
     @Override

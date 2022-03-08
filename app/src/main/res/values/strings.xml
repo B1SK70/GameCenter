@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GameCenter</string>
+    <string name="delete_scores">delete scores</string>
 </resources>

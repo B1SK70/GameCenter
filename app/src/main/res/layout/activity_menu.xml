@@ -14,35 +14,23 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
-        <Button
-            android:id="@+id/playScore"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/playPegSolitaire"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="41dp"
-            android:gravity="center_horizontal"
-            android:text="SCORES" />
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="1dp"
+            android:text="username"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/playClose"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/logOff"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/playScore"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="41dp"
-            android:gravity="center_horizontal"
-            android:text="EXIT" />
-
-        <Button
-            android:id="@+id/playPegSolitaire"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/play2048"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="41dp"
-            android:gravity="center_horizontal"
-            android:text="Peg Solitaire" />
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="24dp"
+            android:layout_toEndOf="@+id/username"
+            android:text="LogOff" />
 
         <TextView
             android:id="@+id/title"
@@ -51,7 +39,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="41dp"
-            android:gravity="center_horizontal"
             android:text="WHAT ARE YOU PLAYING"
             android:textSize="20sp" />
 
@@ -62,7 +49,34 @@
             android:layout_below="@+id/title"
             android:layout_alignParentStart="true"
             android:layout_marginTop="41dp"
-            android:gravity="center_horizontal"
             android:text="2048" />
+
+        <Button
+            android:id="@+id/playPegSolitaire"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/play2048"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp"
+            android:text="Peg Solitaire" />
+
+        <Button
+            android:id="@+id/playScore"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/playPegSolitaire"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp"
+            android:text="SCORES" />
+
+        <Button
+            android:id="@+id/playClose"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/playScore"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp"
+            android:text="EXIT" />
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
