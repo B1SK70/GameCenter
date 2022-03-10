@@ -32,7 +32,6 @@ public class Login extends AppCompatActivity {
 
         bindXMl();
 
-
     }
 
     private void bindXMl() {
@@ -122,6 +121,4 @@ public class Login extends AppCompatActivity {
                 values
         );
     }
-
-
 }

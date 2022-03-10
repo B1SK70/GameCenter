@@ -41,13 +41,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         logo.setAnimation(fadeIn);
 
         Timer timeline = new Timer();
         timeline.schedule(fadeOutLogo, 2100);
         timeline.schedule(ToMenu, 3400);
-
 
     }
 

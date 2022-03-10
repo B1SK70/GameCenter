@@ -21,7 +21,6 @@ public class Scores extends AppCompatActivity {
     RecyclerView g2048, pegSolitaire;
     Button empty2048, emptyPeg;
 
-
     ArrayList<String[]> pegScores = new ArrayList<>();
     ArrayList<String[]> g2048Scores = new ArrayList<>();
 
@@ -38,9 +37,6 @@ public class Scores extends AppCompatActivity {
         getScoresValues();
         createAdapters();
         bindAdapters();
-
-
-        //showScores();
 
     }
 
@@ -94,9 +90,6 @@ public class Scores extends AppCompatActivity {
     }
 
     private void sortScores(ArrayList<String[]> fill, ArrayList<String[]> unsorted, String sortTypeString) {
-
-
-
         int sortType = (sortTypeString == "desc") ? 0 : 1;
 
         int size = unsorted.size();
@@ -166,20 +159,6 @@ public class Scores extends AppCompatActivity {
                 "_id",
                 values
         );
-    }
-
-    private void showScores() {
-        Cursor scores = selectByTable("g2048");
-
-        if (scores.moveToFirst()) do {
-
-            System.out.println(scores.getString(1));
-            System.out.println(scores.getString(2));
-            System.out.println("---");
-
-        } while (scores.moveToNext());
-        scores.close();
-
     }
 
     private Cursor selectByTable(String desiredTitle) {
