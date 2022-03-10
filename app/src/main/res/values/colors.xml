@@ -3,7 +3,7 @@
 
 
     <!-- /////////////////// COMMON ////////////////////// -->
-    <color name="background">#d7d7c1</color>
+    <color name="gameBackground">#d7d7c1</color>
     <!-- ///////////////////////////////////////////////// -->
 
     <!-- /////////////////// Peg Solitaire ////////////////////// -->
@@ -32,7 +32,15 @@
     <color name="cell_2048">#b9f2ff</color>
     <!-- ///////////////////////////////////////////////// -->
 
-    <!-- /////////////////// DEFAULTS /////////////// -->
+    <!--     /////////////////// APP COLORS /////////////// -->
+    <color name="defaultBackground">#D8DBE2</color>
+    <color name="sage">#D2CCA1</color>
+    <color name="ming">#387780</color>
+    <color name="timberwolf">#DBD4D3</color>
+    <color name="xanadu">#73937E</color>
+    <!-- ///////////////////////////////////////////////// -->
+
+<!--     /////////////////// DEFAULTS /////////////// -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -40,4 +48,5 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- ///////////////////////////////////////////////// -->
 </resources>

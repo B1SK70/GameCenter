@@ -64,8 +64,12 @@ public class Register extends AppCompatActivity {
 
                 if (String.valueOf(user_nameInput.getText()).equals(user_name)) {
                     userExistent = true;
-                    warnUser();
+                    warnUser("User already exists");
+                } else if (user_nameInput.getText().length() > 11 ) {
+                    userExistent = true;
+                    warnUser("User has to be 11 characters or less");
                 }
+
             } while (response.moveToNext());
             response.close();
 
@@ -75,8 +79,8 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void warnUser() {
-        warning.setText("User already exists");
+    private void warnUser(String waringText) {
+        warning.setText(waringText);
     }
 
     private void createUser(String user_name, String password) {

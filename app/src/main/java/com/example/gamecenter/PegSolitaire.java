@@ -16,6 +16,8 @@ public class PegSolitaire extends AppCompatActivity {
 
     private int scoreN;
 
+    TextView scoreLabbel;
+
     private boolean firstTap = true;
     private int[] tappedCel = new int[2];
 
@@ -30,13 +32,13 @@ public class PegSolitaire extends AppCompatActivity {
     TextView[][] allC;
 
     int boardStatus[][] = {
-            {2, 2, 0, 1, 0, 2, 2},
-            {2, 2, 0, 0, 0, 2, 2},
-            {0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0},
-            {2, 2, 0, 0, 0, 2, 2},
-            {2, 2, 0, 0, 0, 2, 2},
+            {2, 2, 1, 1, 1, 2, 2},
+            {2, 2, 1, 1, 1, 2, 2},
+            {1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 0, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1},
+            {2, 2, 1, 1, 1, 2, 2},
+            {2, 2, 1, 1, 1, 2, 2},
     };
 
     @Override
@@ -48,6 +50,7 @@ public class PegSolitaire extends AppCompatActivity {
         setListeners();
         initialBoardPaint();
 
+        updateScore();
     }
 
     private void initialBoardPaint() {
@@ -129,6 +132,7 @@ public class PegSolitaire extends AppCompatActivity {
             }
         }
     }
+
     private void gameOver() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -197,6 +201,7 @@ public class PegSolitaire extends AppCompatActivity {
         scoreN = newScore;
 
         if (scoreN == 1) sendScore();
+        scoreLabbel.setText(String.valueOf(scoreN));
 
     }
 
@@ -281,5 +286,7 @@ public class PegSolitaire extends AppCompatActivity {
                 {c50, c51, c52, c53, c54, c55, c56},
                 {c60, c61, c62, c63, c64, c65, c66}
         };
+
+        scoreLabbel = (TextView) findViewById(R.id.scoreLabbel);
     }
 }

@@ -34,10 +34,10 @@ public class Joc2048 extends AppCompatActivity implements
     TextView[][] cellsMap;
 
     int[][] gameMap = new int[][]{
-            {2, 4, 2, 4},
-            {4, 2, 4, 4},
-            {2, 4, 2, 4},
-            {4, 2, 4, 4}
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0}
     };
 
     LastStatus lastStatus = new LastStatus();
@@ -49,9 +49,7 @@ public class Joc2048 extends AppCompatActivity implements
         mDetector = new GestureDetectorCompat(this, this);
 
         identifyButtons();
-
         updateGameStatus(gameMap, scoreN);
-
     }
 
     private void identifyButtons() {
@@ -139,7 +137,6 @@ public class Joc2048 extends AppCompatActivity implements
             comodin = 1;
         }
 
-
         //Check vertically
         comodin = 1;
         for (int i = 0; i <= 3; i++) {
@@ -163,7 +160,7 @@ public class Joc2048 extends AppCompatActivity implements
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("GAME OVER");
 
-        builder.setMessage("Your score -> " + scoreN );
+        builder.setMessage("Your score -> " + scoreN);
 
         builder.setPositiveButton("GO BACK", new DialogInterface.OnClickListener() {
             @Override
@@ -179,7 +176,7 @@ public class Joc2048 extends AppCompatActivity implements
     private void sendScore() {
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("score", String.valueOf(scoreN) );
+        resultIntent.putExtra("score", String.valueOf(scoreN));
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
@@ -219,12 +216,8 @@ public class Joc2048 extends AppCompatActivity implements
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         return super.onKeyDown(keyCode, event);
-
     }
-
-    // ---------------------------------------
 
     private void updateCell(int x, int y, int newValue) {
         gameMap[x][y] = newValue;
@@ -291,10 +284,7 @@ public class Joc2048 extends AppCompatActivity implements
                 }
                 break;
         }
-
-
         updateGameStatus(finalEasySort, newScore);
-
     }
 
     private int getNumberColor(int value) {
@@ -373,7 +363,6 @@ public class Joc2048 extends AppCompatActivity implements
         }
         lastStatus.score = scoreN;
 
-
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 updateCell(x, y, easySort[x][y]);
@@ -391,10 +380,8 @@ public class Joc2048 extends AppCompatActivity implements
                 updateCell(x, y, lastStatus.map[x][y]);
             }
         }
-
         scoreN = lastStatus.score;
         score.setText(String.valueOf(scoreN));
-
     }
 
 

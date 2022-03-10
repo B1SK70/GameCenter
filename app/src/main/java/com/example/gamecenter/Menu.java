@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +29,7 @@ public class Menu extends AppCompatActivity {
         sharedPref = getSharedPreferences("mypref", 0);
 
         wakeUpDB();
-        setBtns();
+        bindToXML();
 
         checkUser();
 
@@ -62,7 +61,7 @@ public class Menu extends AppCompatActivity {
         editor.commit();
     }
 
-    private void setBtns() {
+    private void bindToXML() {
         play2048 = findViewById(R.id.play2048);
         play2048.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -163,21 +162,5 @@ public class Menu extends AppCompatActivity {
                 "_id",
                 values
         );
-    }
-
-    private void deleteFromDB(int gameCode, int id) {
-        String gameName = ( gameCode == 1 ) ? "g2048" : "gpeg";
-        db.delete( gameName,
-                "_id=?",
-                new String[]{ String.valueOf(id) }
-        );
-    }
-
-    private Cursor selectFromDB() {
-        return db.rawQuery("SELECT _id, title, text FROM coments", null);
-    }
-
-    private Cursor selectByTable(String desiredTitle) {
-        return db.rawQuery("SELECT * FROM "+ desiredTitle, null);
     }
 }
